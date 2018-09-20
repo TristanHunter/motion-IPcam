@@ -116,7 +116,7 @@ def recMotion(name, HEIGHT, WIDTH, FPS, backupTime):
             frameCt = frameCt + 1
 
         cv2.drawContours(frame, contours, -1, (0,255,0))                # Draw contours                  
-        cv2.imshow(vidName, frame)                                        # Display video frame
+        cv2.imshow(name, frame)                                        # Display video frame
 
         k = chr(cv2.waitKey(1) & 0xFF)      # Must use key wait for imshow
         if k == 'q':                        # Press q to quit
