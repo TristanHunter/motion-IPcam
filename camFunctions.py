@@ -2,6 +2,21 @@ import cv2
 import subprocess as sp
 import numpy as np
 import datetime
+import sys
+
+# USAGE: ./camFunctions.py Cam1 480 640 20 22:00:00
+
+def main(argv=[__name__]):
+
+    cam_name = str(sys.argv[1])
+    height = int(sys.argv[2])
+    width = int(sys.argv[3])
+    fps = int(sys.argv[4])
+    backup_time = str(sys.argv[5])
+
+    print(recMotion(cam_name, height, width, fps, backup_time))
+    return 0
+
 
 def vidReader(camName):
 
@@ -44,13 +59,16 @@ def vidWriter(vidName, WIDTH, HEIGHT, FPS):
     
 
 
-def recMotion(name, pipeIn, HEIGHT, WIDTH, FPS, backupTime):
+def recMotion(name, HEIGHT, WIDTH, FPS, backupTime):
 
     saveDir = './saved/'
     frameCt = 0
     startDT = datetime.datetime.now()
 
-    # initialize video writer
+    # initialize video reader pipe
+    pipeIn = vidReader(name)
+
+    # initialize video writer pipe
     vidName = str(startDT.strftime('%Y-%m-%d_%H-%M-%S_')) + name + '.mp4'
     pipeOut = vidWriter(vidName, WIDTH, HEIGHT, FPS)
     
@@ -152,22 +170,5 @@ def recMotion(name, pipeIn, HEIGHT, WIDTH, FPS, backupTime):
     pipeIn.wait()
 
 
-def detectMotion():
-    #TODO create a subroutine for recMotion()
-    return 0
-
-
-def startCam(camName, HEIGHT, WIDTH, FPS, backupTime):
-
-    # open pipe listener with ffmpeg
-    pipeIn = vidReader(camName)
-
-    recMotion(camName, pipeIn, HEIGHT, WIDTH, FPS, backupTime)
-
-
-def main():
-
-    print(startCam('PiCam1', 480, 640, 20, '20:45:00'))
-    return 0
 
 main()
