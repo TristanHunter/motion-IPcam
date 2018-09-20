@@ -5,6 +5,8 @@
 
 #set -x
 
+# USAGE: ./ncStreamClient.sh 5777 192.168.0.28
+
 port=$1
 camName=$2		#Name should not have file extension
 

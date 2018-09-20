@@ -13,9 +13,16 @@
 
 #set -x
 
+#USAGE: ./startCam 192.168.0.28 5777 Cam1 640 480 20 22:00:00 0
+
 ip=$1
 port=$2
 camName=$3
+width=$4
+height=$5
+fps=$6
+backup_time=$7
+comp_factor=$8	#set to 0 for no compression
 
 echo "Starting $camName..."
 
@@ -25,7 +32,7 @@ echo "Redirecting stderr and stdout to ./output.txt..."
 
 echo "Starting ./camFunctions.py..."
 #python ./MotionDetecTest.py &
-python ./camFunctions.py & #> output.txt &
+python ./camFunctions.py $camName $height $width $fps $backup_time & #> output.txt &
 
 sleep 2
 
@@ -36,7 +43,7 @@ do
     then
 	echo "Calling piStream.sh to start video to pipe..."
 	sleep 1
-	./piStream.sh $ip $port '640' '480' '20' '0'
+	./piStream.sh $ip $port $width $height $fps $comp_factor
     fi
 done < output.txt
 
